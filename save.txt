@@ -1,0 +1,9 @@
+typedef struct s_philo
+{
+	int				fork;
+	int				id;
+	int				state;
+	int				last_eat;
+	int				nb_eat;
+	struct s_data	*data;
+}	t_philo;
