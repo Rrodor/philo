@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 14:27:19 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/24 18:11:15 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/24 18:49:02 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,20 @@ typedef struct s_philo
 typedef struct s_data
 {
 	int				nb_philo;
+	int				nb_eat;
+	int				dead;
 	long long int	time_to_die;
 	long long int	time_to_eat;
 	long long int	time_to_sleep;
 	long long int	start_time;
-	int				nb_eat;
-	int				dead;
-	t_philo 		**philo;
+	t_philo			**philo;
 	pthread_mutex_t	pen;
+	pthread_mutex_t	*fork;
 }	t_data;
 
 void			*ph_threadphilo(void *arg);
 long long int	get_time(void);
+void			ph_free(t_data *data);
+void			ph_mutexdestroy(t_data *data);
 
 #endif
-

@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:35:25 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/24 18:11:28 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/24 18:48:38 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_data	*init_philo(t_data *data)
 	i = 0;
 	data->philo = malloc(sizeof(t_philo *) * data->nb_philo);
 	if (!data->philo)
-		return (0);
+		return (NULL);
 	while (i < data->nb_philo)
 	{
 		data->philo[i] = malloc(sizeof(t_philo));
@@ -37,12 +37,27 @@ t_data	*init_philo(t_data *data)
 	return (data);
 }
 
+pthread_mutex_t	*init_mutex(t_data *data)
+{
+	pthread_mutex_t	*mutex;
+	int				i;
+
+	i = 0;
+	mutex = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
+	if (!mutex)
+		return (NULL);
+	while (i < data->nb_philo)
+	{
+		pthread_mutex_init(&mutex[i], NULL);
+		i++;
+	}
+	return (mutex);
+}
+
 t_data	*init_data(int argc, char const *argv[])
 {
 	t_data	*data;
-	int		i;
 
-	i = 0;
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (NULL);
@@ -58,14 +73,17 @@ t_data	*init_data(int argc, char const *argv[])
 	else
 		data->nb_eat = -1;
 	data = init_philo(data);
-	if(!data)
+	if (!data)
+		return (NULL);
+	data->fork = init_mutex(data);
+	if (!data->fork)
 		return (NULL);
 	return (data);
 }
 
 int	ph_createthread(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->nb_philo)
@@ -83,22 +101,7 @@ int	ph_createthread(t_data *data)
 	return (0);
 }
 
-void	ph_free(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		free(data->philo[i]->thread);
-		free(data->philo[i]);
-		i++;
-	}
-	free(data->philo);
-	free(data);
-}
-
-int main(int argc, char const *argv[])
+int	main(int argc, char const *argv[])
 {
 	t_data	*data;
 	int		i;
@@ -114,6 +117,7 @@ int main(int argc, char const *argv[])
 	if (!data)
 		return (1);
 	ph_createthread(data);
+	ph_mutexdestroy(data);
 	ph_free(data);
-	return 0;
+	return (0);
 }

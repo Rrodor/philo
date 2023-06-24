@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:49:53 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/24 18:14:31 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/24 18:47:11 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	ph_write(t_philo *philo)
 	if (philo->state == THINK)
 		printf("%lld %d is thinking\n", time, philo->id + 1);
 	else if (philo->state == EAT)
-	{
 		printf("%lld %d is eating\n", time, philo->id + 1);
-	}
 	else if (philo->state == SLEEP)
 		printf("%lld %d is sleeping\n", time, philo->id + 1);
 	else if (philo->state == DEAD)
@@ -46,17 +44,23 @@ t_philo	*ph_think(t_philo *philo)
 	return (philo);
 }
 
-t_philo *ph_eat(t_philo *philo)
+t_philo	*ph_eat(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->fork[philo->id]);
+	pthread_mutex_lock(&philo->data->fork[(philo->id + 1)
+		% philo->data->nb_philo]);
 	ph_write(philo);
 	philo->nb_eat++;
 	philo->last_eat = get_time();
 	usleep(philo->data->time_to_eat * 1000);
 	philo->state = SLEEP;
+	pthread_mutex_unlock(&philo->data->fork[philo->id]);
+	pthread_mutex_unlock(&philo->data->fork[(philo->id + 1)
+		% philo->data->nb_philo]);
 	return (philo);
 }
 
-t_philo *ph_sleep(t_philo *philo)
+t_philo	*ph_sleep(t_philo *philo)
 {
 	ph_write(philo);
 	usleep(philo->data->time_to_sleep * 1000);
