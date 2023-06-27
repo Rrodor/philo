@@ -6,7 +6,7 @@ OBJS= $(addprefix $(OBJPATH), $(OBJ))
 SRCS= $(addprefix $(SRCPATH), $(SRC))
 OBJPATH= ./ofiles/
 
-CC= gcc
+CC= gcc -Wall -Wextra -Werror -lpthread -D_REENTRANT
 
 all: $(NAME)
 

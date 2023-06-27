@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:49:53 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/24 18:47:11 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/27 18:08:29 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,22 @@ t_philo	*ph_think(t_philo *philo)
 
 t_philo	*ph_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->fork[philo->id]);
-	pthread_mutex_lock(&philo->data->fork[(philo->id + 1)
-		% philo->data->nb_philo]);
+	if (philo->id % 2)
+	{
+		pthread_mutex_lock(&philo->data->fork[philo->id]);
+		ph_write2(philo, 1);
+		pthread_mutex_lock(&philo->data->fork[(philo->id + 1)
+			% philo->data->nb_philo]);
+		ph_write2(philo, 2);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->data->fork[(philo->id + 1)
+			% philo->data->nb_philo]);
+		ph_write2(philo, 2);
+		pthread_mutex_lock(&philo->data->fork[philo->id]);
+		ph_write2(philo, 1);
+	}
 	ph_write(philo);
 	philo->nb_eat++;
 	philo->last_eat = get_time();

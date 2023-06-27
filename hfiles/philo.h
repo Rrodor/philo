@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 14:27:19 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/24 18:49:02 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/27 18:12:32 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,7 @@ void			*ph_threadphilo(void *arg);
 long long int	get_time(void);
 void			ph_free(t_data *data);
 void			ph_mutexdestroy(t_data *data);
+void			ph_write2(t_philo *philo, int i);
+int				ph_atoi(const char *nptr);
 
 #endif

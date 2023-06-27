@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:35:25 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/24 18:48:38 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/27 18:12:55 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ t_data	*init_data(int argc, char const *argv[])
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (NULL);
-	data->nb_philo = atoi(argv[1]);
-	data->time_to_die = atoi(argv[2]);
-	data->time_to_eat = atoi(argv[3]);
-	data->time_to_sleep = atoi(argv[4]);
+	data->nb_philo = ph_atoi(argv[1]);
+	data->time_to_die = ph_atoi(argv[2]);
+	data->time_to_eat = ph_atoi(argv[3]);
+	data->time_to_sleep = ph_atoi(argv[4]);
 	data->start_time = get_time();
 	data->dead = 0;
 	pthread_mutex_init(&data->pen, NULL);
 	if (argc == 6)
-		data->nb_eat = atoi(argv[5]);
+		data->nb_eat = ph_atoi(argv[5]);
 	else
 		data->nb_eat = -1;
 	data = init_philo(data);
@@ -104,9 +104,7 @@ int	ph_createthread(t_data *data)
 int	main(int argc, char const *argv[])
 {
 	t_data	*data;
-	int		i;
 
-	i = 0;
 	if (argc < 5 || argc > 6)
 	{
 		printf("number_of_philosophers time_to_die time_to_eat time_to_sleep");
@@ -116,8 +114,15 @@ int	main(int argc, char const *argv[])
 	data = init_data(argc, argv);
 	if (!data)
 		return (1);
+	if (data->nb_philo == 1)
+	{
+		printf("0 1 is thinking\n");
+		printf("0 1 has taken a fork\n");
+		printf("0 1 died\n");
+		ph_free(data);
+		return (0);
+	}
 	ph_createthread(data);
-	ph_mutexdestroy(data);
 	ph_free(data);
 	return (0);
 }
