@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:35:25 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/27 18:12:55 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/28 17:06:17 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ pthread_mutex_t	*init_mutex(t_data *data)
 	return (mutex);
 }
 
-t_data	*init_data(int argc, char const *argv[])
+t_data	*init_data(int argc, char *argv[])
 {
 	t_data	*data;
 
@@ -101,7 +101,7 @@ int	ph_createthread(t_data *data)
 	return (0);
 }
 
-int	main(int argc, char const *argv[])
+int	main(int argc, char *argv[])
 {
 	t_data	*data;
 
@@ -111,6 +111,8 @@ int	main(int argc, char const *argv[])
 		printf("[number_of_times_each_philosopher_must_eat]\n");
 		return (1);
 	}
+	if (!testval(argc, argv))
+		return (1);
 	data = init_data(argc, argv);
 	if (!data)
 		return (1);

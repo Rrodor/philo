@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 14:27:19 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/27 18:12:32 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/28 17:04:42 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ void			ph_free(t_data *data);
 void			ph_mutexdestroy(t_data *data);
 void			ph_write2(t_philo *philo, int i);
 int				ph_atoi(const char *nptr);
+int				testval(int argc, char **argv);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rrodor <rrodor@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:49:53 by rrodor            #+#    #+#             */
-/*   Updated: 2023/06/27 18:08:29 by rrodor           ###   ########.fr       */
+/*   Updated: 2023/06/28 16:54:36 by rrodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,6 @@ void	ph_write(t_philo *philo)
 		philo->data->dead = 1;
 	}
 	pthread_mutex_unlock(&philo->data->pen);
-}
-
-t_philo	*ph_think(t_philo *philo)
-{
-	ph_write(philo);
-	philo->state = EAT;
-	return (philo);
 }
 
 t_philo	*ph_eat(t_philo *philo)
@@ -86,7 +79,7 @@ void	*ph_threadphilo(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->nb_eat < philo->data->nb_eat)
+	while (philo->data->nb_eat == -1 || philo->nb_eat < philo->data->nb_eat)
 	{
 		if (philo->state == DEAD)
 			return (NULL);
@@ -97,7 +90,10 @@ void	*ph_threadphilo(void *arg)
 			return (NULL);
 		}
 		if (philo->state == THINK)
-			philo = ph_think(philo);
+		{
+			ph_write(philo);
+			philo->state = EAT;
+		}
 		else if (philo->state == EAT)
 			philo = ph_eat(philo);
 		else if (philo->state == SLEEP)

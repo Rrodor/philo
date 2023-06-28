@@ -1,12 +1,12 @@
 NAME= philo
-SRC= philo.c philo_threads.c philo_utils.c
+SRC= philo.c philo_threads.c philo_utils.c philo_error.c
 SRCPATH= ./cfiles/
 OBJ= $(SRC:.c=.o)
 OBJS= $(addprefix $(OBJPATH), $(OBJ))
 SRCS= $(addprefix $(SRCPATH), $(SRC))
 OBJPATH= ./ofiles/
 
-CC= gcc -Wall -Wextra -Werror -lpthread -D_REENTRANT
+CC= gcc -Wall -Wextra -Werror -pthread
 
 all: $(NAME)
 
